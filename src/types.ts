@@ -11,3 +11,7 @@ export type IIngredient = {
   __v?: string;
 };
 
+export type IIngredientInput = {
+  name: string;
+  unit: UnitType;
+}

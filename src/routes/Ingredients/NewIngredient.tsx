@@ -1,19 +1,11 @@
 import { Box, Button, MenuItem, Select, TextField } from "@mui/material";
 import React, { useCallback } from "react";
-import { UnitType } from "../../types";
+import { IIngredientInput, UnitType } from "../../types";
 import { useAddIngredientMutation } from "../../redux/API/API";
 
 interface INewIngredientProps {
-  values: {
-    name: string;
-    unit: UnitType;
-  };
-  setValues: React.Dispatch<
-    React.SetStateAction<{
-      name: string;
-      unit: UnitType;
-    }>
-  >;
+  values: IIngredientInput;
+  setValues: React.Dispatch<React.SetStateAction<IIngredientInput>>;
   resetNewIngredient: () => void;
 }
 
@@ -75,4 +67,4 @@ const NewIngredient = ({ values, setValues, resetNewIngredient }: INewIngredient
   );
 };
 
-export default NewIngredient;
+export default React.memo(NewIngredient);

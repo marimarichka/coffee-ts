@@ -54,11 +54,12 @@ const Ingredients = () => {
             flexDirection: "row",
             flexWrap: "wrap",
             width: "100%",
+            justifyContent: 'center'
           }}
         >
           {ingredients?.map((ingredient) => (
             <IngredientItem ingredient={ingredient} key={ingredient._id} />
-          ))}{" "}
+          ))}
           {renderNewIngredient && (
             <NewIngredient values={values} setValues={setValues} resetNewIngredient={resetNewIngredient} />
           )}

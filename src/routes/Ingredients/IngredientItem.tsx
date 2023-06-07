@@ -11,8 +11,8 @@ interface IOneIngredient {
 
 const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
   const [editing, setEditing] = useState(false);
-  const [deleteIngredient, { isLoading: isDeleteIngrLoading }] = useDeleteIngredientMutation();
-  const [editIngredient, { isLoading: isUpdateIngrLoading }] = useEditIngredientMutation();
+  const [deleteIngredient, { isLoading: isDeleteIngredientLoading }] = useDeleteIngredientMutation();
+  const [editIngredient, { isLoading: isEditIngredientLoading }] = useEditIngredientMutation();
   const [values, setValues] = useState({
     name: ingredient?.name,
     unit: ingredient?.unit,
@@ -25,7 +25,6 @@ const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
 
   return (
     <Box
-      key={ingredient._id}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -41,31 +40,7 @@ const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
       }}
     >
       <Box sx={{ marginBottom: "10px", fontSize: "18px" }}>Ingredient</Box>
-      {!editing ? (
-        <>
-          <Box sx={{ marginBottom: "10px", fontSize: "18px" }}>Name: {ingredient.name}</Box>
-          <Box sx={{ fontSize: "18px" }}>Unit: {ingredient.unit}</Box>
-          <Box
-            sx={{ display: "flex", flexDirection: "row", alignSelf: "flex-end", position: "absolute", bottom: "20px" }}
-          >
-            <Box>
-              <IconButton
-                disabled={isDeleteIngrLoading}
-                onClick={() => {
-                  setEditing(true);
-                }}
-              >
-                <EditIcon sx={{ fontSize: "30px" }} />
-              </IconButton>
-            </Box>
-            <Box>
-              <IconButton aria-label="delete" onClick={handleRemove} disabled={isDeleteIngrLoading}>
-                <DeleteIcon sx={{ fontSize: "30px" }} />
-              </IconButton>
-            </Box>
-          </Box>
-        </>
-      ) : (
+      {editing ? (
         <>
           <TextField
             autoFocus
@@ -87,6 +62,7 @@ const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
             <Button
               variant="contained"
               color="primary"
+              disabled={isEditIngredientLoading}
               onClick={() => {
                 setEditing(false);
                 setValues(ingredient);
@@ -97,14 +73,30 @@ const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
             <Button
               variant="contained"
               color="primary"
+              disabled={isEditIngredientLoading}
               sx={{ marginLeft: "30px" }}
-              onClick={() => {
+              onClick={async () => {
+                await editIngredient({ ...ingredient, ...values });
                 setEditing(false);
-                editIngredient({ ...ingredient, ...values });
               }}
             >
               Edit
             </Button>
+          </Box>
+        </>
+      ) : (
+        <>
+          <Box sx={{ marginBottom: "10px", fontSize: "18px" }}>Name: {ingredient.name}</Box>
+          <Box sx={{ fontSize: "18px" }}>Unit: {ingredient.unit}</Box>
+          <Box
+            sx={{ display: "flex", flexDirection: "row", alignSelf: "flex-end", position: "absolute", bottom: "20px" }}
+          >
+            <IconButton disabled={isDeleteIngredientLoading} onClick={() => setEditing(true)}>
+              <EditIcon sx={{ fontSize: "30px" }} />
+            </IconButton>
+            <IconButton aria-label="delete" onClick={handleRemove} disabled={isDeleteIngredientLoading}>
+              <DeleteIcon sx={{ fontSize: "30px" }} />
+            </IconButton>
           </Box>
         </>
       )}
@@ -112,4 +104,4 @@ const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
   );
 };
 
-export default IngredientItem;
+export default React.memo(IngredientItem);
