@@ -14,4 +14,13 @@ export type IIngredient = {
 export type IIngredientInput = {
   name: string;
   unit: UnitType;
+};
+
+export type IInventory = {
+  _id: string;
+  name: string;
+};
+
+export type IInventoryInput = {
+  name: string;
 }
