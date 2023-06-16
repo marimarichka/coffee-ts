@@ -1,7 +1,7 @@
 export enum UnitType {
   Gram = "GRAM",
   Milliliter = "MILLILITER",
-  Count = "COUNT"
+  Count = "COUNT",
 }
 
 export type IIngredient = {
@@ -23,4 +23,11 @@ export type IInventory = {
 
 export type IInventoryInput = {
   name: string;
-}
+};
+
+export type IProduct = {
+  _id: string;
+  name: string;
+  ingredient: { _id: string; value: number; optional: boolean }[];
+  inventory: { _id: string; value: number; optional: boolean }[];
+};

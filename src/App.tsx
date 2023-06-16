@@ -6,6 +6,8 @@ import Header from "./Header/Header";
 import Navbar from "./Navbar/Navbar";
 import Ingredients from "./routes/Ingredients/Ingredients";
 import Inventory from "./routes/Inventory/Inventory";
+import Products from "./routes/Products/Products";
+import CreatingProduct from "./routes/Products/CreatingProduct";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Routes>
             <Route path="ingredients" element={<Ingredients />} />
             <Route path="inventory" element={<Inventory />} />
+            <Route path="products" element={<Products />} />
+            <Route path="creatingproduct" element={<CreatingProduct />} />
           </Routes>
         </Box>
       </Box>

@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import FlatwareOutlinedIcon from '@mui/icons-material/FlatwareOutlined';
+import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import { Link, useLocation } from "react-router-dom";
 import { COLOR_PINK } from "../config/constants";
 
@@ -24,6 +25,7 @@ const Navbar = () => {
       {[
         { pathName: "/ingredients", Icon: MenuBookOutlinedIcon },
         { pathName: "/inventory", Icon: FlatwareOutlinedIcon },
+        { pathName: "/products", Icon: InventoryOutlinedIcon },
       ].map(({ pathName, Icon }) => {
         return (
           <Link

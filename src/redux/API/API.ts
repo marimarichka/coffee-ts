@@ -1,10 +1,10 @@
-import { IIngredient, IInventory } from "../../types";
+import { IIngredient, IInventory, IProduct } from "../../types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://192.168.1.8:5000/" }),
-  tagTypes: ["Ingredients", "Inventory"],
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/" }),
+  tagTypes: ["Ingredients", "Inventory", "Products"],
   endpoints: (builder) => ({
     getIngredients: builder.query<IIngredient[], void>({
       query: () => `/ingredient`,
@@ -62,6 +62,34 @@ export const api = createApi({
       }),
       invalidatesTags: ["Inventory"],
     }),
+    getProducts: builder.query<IProduct[], void>({
+      query: () => `/product`,
+      providesTags: ["Products"],
+    }),
+    addProduct: builder.mutation<IProduct, Partial<IProduct>>({
+      query: (body) => ({
+        url: `/product`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Products"],
+    }),
+    editProduct: builder.mutation<IProduct, Partial<IProduct>>({
+      query: (body) => ({
+        url: `product/${body._id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["Products"],
+    }),
+    deleteProduct: builder.mutation<IProduct, Partial<IProduct>>({
+      query: (body) => ({
+        url: `/product/${body._id}`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["Products"],
+    }),
   }),
 });
 
@@ -74,4 +102,8 @@ export const {
   useAddInventoryMutation,
   useEditInventoryMutation,
   useDeleteInventoryMutation,
+  useGetProductsQuery,
+  useAddProductMutation,
+  useEditProductMutation,
+  useDeleteProductMutation,
 } = api;
