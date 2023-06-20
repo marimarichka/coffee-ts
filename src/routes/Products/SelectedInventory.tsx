@@ -36,7 +36,7 @@ const SelectedInventory = () => {
       }}
     >
       <Box sx={{ marginBottom: "20px", fontSize: "18px", fontWeight: "500" }}>Inventory</Box>
-      <Box sx={{ display: "flex", overflowX: "auto", overflowY: "hidden", paddingBottom: "10px" }}>
+      <Box sx={{ display: "flex", overflowX: "auto", overflowY: "hidden", paddingBottom: "10px", flexGrow: 1 }}>
         {selectedInventory.map((inventoryItem) => (
           <Paper
             key={inventoryItem._id}
@@ -81,7 +81,7 @@ const SelectedInventory = () => {
             </IconButton>
           </Paper>
         ))}
-        <Box sx={{ paddingRight: "10px", display: "flex", alignSelf: "center" }}>
+        <Box sx={{ paddingRight: "10px", display: "flex", alignSelf: "center", justifyContent: "center" }}>
           <Button
             variant="contained"
             color="primary"
