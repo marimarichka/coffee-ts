@@ -26,7 +26,7 @@ function App() {
           }}
         >
           <Routes>
-            <Route path="ingredients" element={<Ingredients />} />
+            <Route path="/" element={<Ingredients />} />
             <Route path="inventory" element={<Inventory />} />
             <Route path="products" element={<Products />} />
             <Route path="creatingproduct" element={<CreatingProduct />} />
