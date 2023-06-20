@@ -5,9 +5,11 @@ import { useAppSelector } from "../../redux/store";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import { deleteInventory, updateInventory } from "../../redux/slices/productSlice";
+import { useGetInventoryQuery } from "../../redux/API/API";
 
 const SelectedInventory = () => {
-  const inventory = useAppSelector((state) => state.product.inventory);
+  const { data: inventory } = useGetInventoryQuery();
+  const selectedInventory = useAppSelector((state) => state.product.inventory);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -33,9 +35,9 @@ const SelectedInventory = () => {
         boxShadow: "0px 0px 6px 1px rgba(0, 0, 0, 0.1)",
       }}
     >
-      <Box sx={{ marginBottom: "20px", fontSize: '18px', fontWeight: '500' }}>Inventory</Box>
-      <Box sx={{ display: "flex", overflowX: "auto", overflowY: "hidden", paddingBottom: '10px' }}>
-        {inventory.map((inventoryItem) => (
+      <Box sx={{ marginBottom: "20px", fontSize: "18px", fontWeight: "500" }}>Inventory</Box>
+      <Box sx={{ display: "flex", overflowX: "auto", overflowY: "hidden", paddingBottom: "10px" }}>
+        {selectedInventory.map((inventoryItem) => (
           <Paper
             key={inventoryItem._id}
             sx={{
@@ -49,7 +51,7 @@ const SelectedInventory = () => {
             }}
             elevation={2}
           >
-            <Box sx={{marginBottom: '10px'}}>{inventoryItem.name}</Box>
+            <Box sx={{ marginBottom: "10px" }}>{inventoryItem.name}</Box>
             <TextField
               type="number"
               variant="outlined"
@@ -83,6 +85,7 @@ const SelectedInventory = () => {
             variant="contained"
             color="primary"
             onClick={() => setOpen(true)}
+            disabled={selectedInventory.length === inventory?.length}
             sx={{
               maxWidth: "40px",
               maxHeight: "40px",

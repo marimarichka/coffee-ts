@@ -3,10 +3,17 @@ import { Box, Button, Paper, CircularProgress } from "@mui/material";
 import { useGetInventoryQuery } from "../../redux/API/API";
 import { useDispatch } from "react-redux";
 import { addInventory } from "../../redux/slices/productSlice";
+import { useAppSelector } from "../../redux/store";
 
 const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const { data: inventory, isLoading } = useGetInventoryQuery();
   const dispatch = useDispatch();
+  const selectedInventory = useAppSelector((state) => state.product.inventory);
+
+  const renderInventory = inventory?.filter((inventoryItem) => {
+    const item = selectedInventory.find(({ _id }) => _id === inventoryItem._id);
+    return !item;
+  });
 
   return (
     <Paper
@@ -27,10 +34,12 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
       </Box>
       <Box>Filter</Box>
       {isLoading ? (
-        <Box sx={{flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center'}}><CircularProgress /></Box>
+        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <CircularProgress />
+        </Box>
       ) : (
         <Box sx={{ backgroundColor: "#F8F8F8", flexGrow: 1, overflow: "auto", maxHeight: "280px" }}>
-          {inventory?.map((inventoryItem) => (
+          {renderInventory?.map((inventoryItem) => (
             <Paper
               onClick={() => {
                 dispatch(
