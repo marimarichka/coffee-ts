@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, MenuItem, Select, TextField } from "@mui/material";
+import { Box, Button, IconButton, MenuItem, TextField } from "@mui/material";
 import React, { FC, useState } from "react";
 import { useDeleteIngredientMutation, useEditIngredientMutation } from "../../redux/API/API";
 import EditIcon from "@mui/icons-material/Edit";
@@ -45,19 +45,22 @@ const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
           <TextField
             autoFocus
             variant="outlined"
+            label="Name"
             value={values.name}
             onChange={({ target: { value } }) => setValues({ ...values, name: value })}
             sx={{ marginBottom: "15px" }}
           />
-          <Select
+          <TextField
             onChange={({ target: { value } }) => setValues({ ...values, unit: value as UnitType })}
             value={values.unit}
+            select
             sx={{ marginBottom: "15px", width: "150px" }}
+            label="Unit"
           >
             <MenuItem value={UnitType.Gram}>Gram</MenuItem>
             <MenuItem value={UnitType.Milliliter}>Milliliter</MenuItem>
             <MenuItem value={UnitType.Count}>Count</MenuItem>
-          </Select>
+          </TextField>
           <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
             <Button
               variant="contained"

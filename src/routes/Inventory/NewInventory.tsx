@@ -35,6 +35,7 @@ const NewInventory = ({ values, setValues, resetNewInventory }: INewInventoryPro
       <Box sx={{ marginBottom: "10px", fontSize: "18px" }}>Ingredient</Box>
       <TextField
         autoFocus
+        label="Name"
         variant="outlined"
         value={values.name}
         onChange={({ target: { value } }) => setValues({ ...values, name: value })}

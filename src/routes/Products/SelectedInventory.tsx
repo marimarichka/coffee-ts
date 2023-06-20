@@ -54,6 +54,7 @@ const SelectedInventory = () => {
             <Box sx={{ marginBottom: "10px" }}>{inventoryItem.name}</Box>
             <TextField
               type="number"
+              label="Count"
               variant="outlined"
               size="small"
               value={inventoryItem.value}

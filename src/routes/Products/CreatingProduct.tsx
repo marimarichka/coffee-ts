@@ -50,10 +50,10 @@ const CreatingProduct = () => {
           Save
         </Button>
       </Box>
-      <TextField variant="outlined" onChange={onNameChange} value={product.name} sx={{ width: "250px" }} />
+      <TextField variant="outlined" label="Name" onChange={onNameChange} value={product.name} sx={{ width: "250px" }} />
       <SelectedInventory />
     </Box>
   );
 };
 
-export default CreatingProduct;
+export default React.memo(CreatingProduct);

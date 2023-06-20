@@ -43,6 +43,7 @@ const InventoryItem: FC<IOneInventory> = ({ inventory }) => {
         <>
           <TextField
             autoFocus
+            label="Name"
             variant="outlined"
             value={values.name}
             onChange={({ target: { value } }) => setValues({ ...values, name: value })}

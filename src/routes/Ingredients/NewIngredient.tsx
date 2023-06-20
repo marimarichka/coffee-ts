@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, Select, TextField } from "@mui/material";
+import { Box, Button, MenuItem, TextField } from "@mui/material";
 import React, { useCallback } from "react";
 import { IIngredientInput, UnitType } from "../../types";
 import { useAddIngredientMutation } from "../../redux/API/API";
@@ -35,20 +35,23 @@ const NewIngredient = ({ values, setValues, resetNewIngredient }: INewIngredient
       <Box sx={{ marginBottom: "10px", fontSize: "18px" }}>Ingredient</Box>
       <TextField
         autoFocus
+        label="Name"
         variant="outlined"
         value={values.name}
         onChange={({ target: { value } }) => setValues({ ...values, name: value })}
         sx={{ marginBottom: "15px" }}
       />
-      <Select
+      <TextField
         onChange={({ target: { value } }) => setValues({ ...values, unit: value as UnitType })}
         value={values.unit}
+        select
+        label="Unit"
         sx={{ marginBottom: "15px", width: "150px" }}
       >
         <MenuItem value={UnitType.Gram}>Gram</MenuItem>
         <MenuItem value={UnitType.Milliliter}>Milliliter</MenuItem>
         <MenuItem value={UnitType.Count}>Count</MenuItem>
-      </Select>
+      </TextField>
       <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
         <Button variant="contained" color="primary" disabled={isAddLoading} onClick={resetNewIngredient}>
           Cancel
