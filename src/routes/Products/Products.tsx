@@ -1,8 +1,9 @@
-import { Box, Button, CircularProgress } from "@mui/material";
 import React from "react";
+import { Box, Button } from "@mui/material";
 import ProductItem from "./ProductItem";
 import { useGetProductsQuery } from "../../redux/API/API";
 import { useNavigate } from "react-router-dom";
+import LoadingWrapper from "../../shared/LoadingWrapper";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -20,15 +21,16 @@ const Products = () => {
         }}
       >
         <Box sx={{ fontSize: "30px", fontWeight: "700", display: "flex", alignItems: "center" }}>Products</Box>
-        <Button variant="contained" color="primary" sx={{ height: "50px" }} onClick={() => navigate('/creatingproduct')}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ height: "50px" }}
+          onClick={() => navigate("/creatingproduct")}
+        >
           CREATE NEW
         </Button>
       </Box>
-      {isLoading ? (
-        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <CircularProgress />
-        </Box>
-      ) : (
+      <LoadingWrapper loading={isLoading} noData={!products?.length}>
         <Box
           sx={{
             display: "flex",
@@ -40,7 +42,7 @@ const Products = () => {
             <ProductItem key={product._id} product={product} />
           ))}
         </Box>
-      )}
+      </LoadingWrapper>
     </Box>
   );
 };
