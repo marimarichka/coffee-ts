@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/store";
@@ -13,7 +13,7 @@ const CreatingProduct = () => {
   const product = useAppSelector((state) => state.product);
   const dispatch = useDispatch();
 
-  const addProduct = useCallback(async () => {
+  const addProduct = async () => {
     const newProduct = {
       name: product.name,
       inventory: product.inventory.map((i) => ({ ...i, value: parseInt(i.value) })),
@@ -22,7 +22,7 @@ const CreatingProduct = () => {
     await addProductMutation(newProduct);
     navigate("/products");
     dispatch(resetProduct());
-  }, [product]);
+  };
 
   const onNameChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatch(setName(e.target.value));

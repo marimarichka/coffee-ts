@@ -21,6 +21,8 @@ const SelectedInventory = () => {
     dispatch(updateInventory({ _id, newValues: { value } }));
   };
 
+  const onDelete = (_id: string) => dispatch(deleteInventory(_id));
+
   return (
     <Box
       sx={{
@@ -58,9 +60,7 @@ const SelectedInventory = () => {
               variant="outlined"
               size="small"
               value={inventoryItem.value}
-              onChange={(e) => {
-                onCountChange(inventoryItem._id, e.target.value);
-              }}
+              onChange={(e) => onCountChange(inventoryItem._id, e.target.value)}
             ></TextField>
             <FormControlLabel
               control={
@@ -73,7 +73,7 @@ const SelectedInventory = () => {
               labelPlacement="end"
             />
             <IconButton
-              onClick={() => dispatch(deleteInventory(inventoryItem._id))}
+              onClick={() => onDelete(inventoryItem._id)}
               aria-label="delete"
               sx={{ width: "35px", height: "35px", alignSelf: "flex-end" }}
             >
@@ -98,7 +98,7 @@ const SelectedInventory = () => {
           </Button>
         </Box>
       </Box>
-      <Dialog open={open}>
+      <Dialog open={open} onClose={() => setOpen(false)}>
         <InventoryDialog setOpen={setOpen} />
       </Dialog>
     </Box>

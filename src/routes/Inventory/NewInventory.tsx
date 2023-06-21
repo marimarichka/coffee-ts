@@ -1,5 +1,5 @@
 import { Box, Button, TextField } from "@mui/material";
-import React, { useCallback } from "react";
+import React from "react";
 import { IInventoryInput } from "../../types";
 import { useAddInventoryMutation } from "../../redux/API/API";
 
@@ -12,9 +12,7 @@ interface INewInventoryProps {
 const NewInventory = ({ values, setValues, resetNewInventory }: INewInventoryProps) => {
   const [addInventoryMutation, { isLoading: isAddLoading }] = useAddInventoryMutation();
 
-  const addInventory = useCallback(() => {
-    addInventoryMutation(values);
-  }, [values]);
+  const addInventory = () => addInventoryMutation(values);
 
   return (
     <Box
@@ -32,7 +30,7 @@ const NewInventory = ({ values, setValues, resetNewInventory }: INewInventoryPro
         position: "relative",
       }}
     >
-      <Box sx={{ marginBottom: "10px", fontSize: "18px" }}>Ingredient</Box>
+      <Box sx={{ marginBottom: "10px", fontSize: "18px" }}>Inventory</Box>
       <TextField
         autoFocus
         label="Name"

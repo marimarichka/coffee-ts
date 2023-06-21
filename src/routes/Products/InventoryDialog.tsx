@@ -1,19 +1,29 @@
-import React from "react";
-import { Box, Button, Paper, CircularProgress } from "@mui/material";
+import React, { useMemo } from "react";
+import { Box, Button, Paper} from "@mui/material";
 import { useGetInventoryQuery } from "../../redux/API/API";
 import { useDispatch } from "react-redux";
 import { addInventory } from "../../redux/slices/productSlice";
 import { useAppSelector } from "../../redux/store";
+import LoadingWrapper from "../../shared/LoadingWrapper";
 
 const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const { data: inventory, isLoading } = useGetInventoryQuery();
   const dispatch = useDispatch();
   const selectedInventory = useAppSelector((state) => state.product.inventory);
 
-  const renderInventory = inventory?.filter((inventoryItem) => {
-    const item = selectedInventory.find(({ _id }) => _id === inventoryItem._id);
-    return !item;
-  });
+  const renderInventory = useMemo(
+    () =>
+      inventory?.filter((inventoryItem) => {
+        const item = selectedInventory.find(({ _id }) => _id === inventoryItem._id);
+        return !item;
+      }),
+    [inventory, selectedInventory]
+  );
+
+  const onDialogOpen = (_id: string, name: string, optional: boolean, value: string) => {
+    dispatch(addInventory({ _id, name, optional, value }));
+    setOpen(false);
+  };
 
   return (
     <Paper
@@ -33,20 +43,11 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
         </Button>
       </Box>
       <Box>Filter</Box>
-      {isLoading ? (
-        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <CircularProgress />
-        </Box>
-      ) : (
-        <Box sx={{ backgroundColor: "#F8F8F8", flexGrow: 1, overflow: "auto", maxHeight: "280px" }}>
+      <LoadingWrapper loading={isLoading} noData={!inventory?.length}>
+      <Box sx={{ backgroundColor: "#F8F8F8", flexGrow: 1, overflow: "auto", maxHeight: "280px" }}>
           {renderInventory?.map((inventoryItem) => (
             <Paper
-              onClick={() => {
-                dispatch(
-                  addInventory({ _id: inventoryItem._id, name: inventoryItem.name, optional: false, value: "0" })
-                );
-                setOpen(false);
-              }}
+              onClick={() => onDialogOpen(inventoryItem._id, inventoryItem.name, false, "0")}
               key={inventoryItem._id}
               elevation={1}
               sx={{
@@ -63,7 +64,7 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
             </Paper>
           ))}
         </Box>
-      )}
+      </LoadingWrapper>
       <Button
         variant="contained"
         color="primary"

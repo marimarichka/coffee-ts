@@ -1,5 +1,5 @@
 import { Box, Button, MenuItem, TextField } from "@mui/material";
-import React, { useCallback } from "react";
+import React from "react";
 import { IIngredientInput, UnitType } from "../../types";
 import { useAddIngredientMutation } from "../../redux/API/API";
 
@@ -12,9 +12,7 @@ interface INewIngredientProps {
 const NewIngredient = ({ values, setValues, resetNewIngredient }: INewIngredientProps) => {
   const [addIngredientMutation, { isLoading: isAddLoading }] = useAddIngredientMutation();
 
-  const addIngredient = useCallback(() => {
-    addIngredientMutation(values);
-  }, [values]);
+  const addIngredient = () => addIngredientMutation(values);
 
   return (
     <Box

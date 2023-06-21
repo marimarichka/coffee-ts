@@ -23,6 +23,16 @@ const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
     deleteIngredient(ingredient);
   };
 
+  const onCancel = () => {
+    setEditing(false);
+    setValues(ingredient);
+  };
+
+  const onEdit = async () => {
+    await editIngredient({ ...ingredient, ...values });
+    setEditing(false);
+  };
+
   return (
     <Box
       sx={{
@@ -62,15 +72,7 @@ const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
             <MenuItem value={UnitType.Count}>Count</MenuItem>
           </TextField>
           <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={isEditIngredientLoading}
-              onClick={() => {
-                setEditing(false);
-                setValues(ingredient);
-              }}
-            >
+            <Button variant="contained" color="primary" disabled={isEditIngredientLoading} onClick={onCancel}>
               Cancel
             </Button>
             <Button
@@ -78,10 +80,7 @@ const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
               color="primary"
               disabled={isEditIngredientLoading}
               sx={{ marginLeft: "30px" }}
-              onClick={async () => {
-                await editIngredient({ ...ingredient, ...values });
-                setEditing(false);
-              }}
+              onClick={onEdit}
             >
               Edit
             </Button>

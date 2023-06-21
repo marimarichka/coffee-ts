@@ -10,7 +10,7 @@ interface IOneProduct {
 }
 
 const ProductItem: FC<IOneProduct> = ({ product }) => {
-  const [deleteProductMutation, { isLoading: isAddProductLoading }] = useDeleteProductMutation();
+  const [deleteProductMutation] = useDeleteProductMutation();
 
   const handleRemove = (event: React.MouseEvent) => {
     event.stopPropagation();
