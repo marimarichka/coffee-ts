@@ -1,8 +1,9 @@
-import { Box, Button, CircularProgress } from "@mui/material";
 import React, { useCallback, useInsertionEffect, useState } from "react";
+import { Box, Button} from "@mui/material";
 import { useGetInventoryQuery } from "../../redux/API/API";
 import InventoryItem from "./InventoryItem";
 import NewInventory from "./NewInventory";
+import LoadingWrapper from "../../shared/LoadingWrapper";
 
 const Inventory = () => {
   const { data: inventory, isLoading } = useGetInventoryQuery();
@@ -36,11 +37,7 @@ const Inventory = () => {
           ADD INVENTORY
         </Button>
       </Box>
-      {isLoading ? (
-        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <CircularProgress />
-        </Box>
-      ) : (
+      <LoadingWrapper loading={isLoading} noData={!inventory?.length}>
         <Box
           sx={{
             display: "flex",
@@ -57,7 +54,7 @@ const Inventory = () => {
             <NewInventory values={values} setValues={setValues} resetNewInventory={resetNewInventory} />
           )}
         </Box>
-      )}
+      </LoadingWrapper>
     </Box>
   );
 };

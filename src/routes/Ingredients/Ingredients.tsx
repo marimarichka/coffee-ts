@@ -1,9 +1,10 @@
-import { Box, Button, CircularProgress } from "@mui/material";
 import React, { useCallback, useInsertionEffect, useState } from "react";
+import { Box, Button} from "@mui/material";
 import { useGetIngredientsQuery } from "../../redux/API/API";
 import { UnitType } from "../../types";
 import IngredientItem from "./IngredientItem";
 import NewIngredient from "./NewIngredient";
+import LoadingWrapper from "../../shared/LoadingWrapper";
 
 const Ingredients = () => {
   const { data: ingredients, isLoading } = useGetIngredientsQuery();
@@ -43,18 +44,14 @@ const Ingredients = () => {
           ADD INGREDIENT
         </Button>
       </Box>
-      {isLoading ? (
-        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <CircularProgress />
-        </Box>
-      ) : (
+      <LoadingWrapper loading={isLoading} noData={!ingredients?.length}>
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
             flexWrap: "wrap",
             width: "100%",
-            justifyContent: 'center'
+            justifyContent: "center",
           }}
         >
           {ingredients?.map((ingredient) => (
@@ -64,7 +61,7 @@ const Ingredients = () => {
             <NewIngredient values={values} setValues={setValues} resetNewIngredient={resetNewIngredient} />
           )}
         </Box>
-      )}
+      </LoadingWrapper>
     </Box>
   );
 };
