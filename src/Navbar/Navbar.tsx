@@ -23,7 +23,7 @@ const Navbar = () => {
       }}
     >
       {[
-        { pathName: "/ingredients", Icon: MenuBookOutlinedIcon },
+        { pathName: "/", Icon: MenuBookOutlinedIcon },
         { pathName: "/inventory", Icon: FlatwareOutlinedIcon },
         { pathName: "/products", Icon: InventoryOutlinedIcon },
       ].map(({ pathName, Icon }) => {
