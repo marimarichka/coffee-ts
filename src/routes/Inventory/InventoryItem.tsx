@@ -22,6 +22,16 @@ const InventoryItem: FC<IOneInventory> = ({ inventory }) => {
     deleteInventory(inventory);
   };
 
+  const onCancel = () => {
+    setEditing(false);
+    setValues(inventory);
+  };
+
+  const onEdit = async () => {
+    await editInventory({ ...inventory, ...values });
+    setEditing(false);
+  };
+
   return (
     <Box
       sx={{
@@ -50,15 +60,7 @@ const InventoryItem: FC<IOneInventory> = ({ inventory }) => {
             sx={{ marginBottom: "15px" }}
           />
           <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={isEditInventoryLoading}
-              onClick={() => {
-                setEditing(false);
-                setValues(inventory);
-              }}
-            >
+            <Button variant="contained" color="primary" disabled={isEditInventoryLoading} onClick={onCancel}>
               Cancel
             </Button>
             <Button
@@ -66,10 +68,7 @@ const InventoryItem: FC<IOneInventory> = ({ inventory }) => {
               color="primary"
               disabled={isEditInventoryLoading}
               sx={{ marginLeft: "30px" }}
-              onClick={async () => {
-                await editInventory({ ...inventory, ...values });
-                setEditing(false);
-              }}
+              onClick={onEdit}
             >
               Edit
             </Button>
