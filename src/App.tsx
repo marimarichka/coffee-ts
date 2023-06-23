@@ -7,7 +7,7 @@ import Navbar from "./Navbar/Navbar";
 import Ingredients from "./routes/Ingredients/Ingredients";
 import Inventory from "./routes/Inventory/Inventory";
 import Products from "./routes/Products/Products";
-import CreatingProduct from "./routes/Products/CreatingProduct";
+import ProductDetail from "./routes/Products/ProductDetail";
 
 function App() {
   return (
@@ -29,7 +29,8 @@ function App() {
             <Route path="/" element={<Ingredients />} />
             <Route path="inventory" element={<Inventory />} />
             <Route path="products" element={<Products />} />
-            <Route path="creatingproduct" element={<CreatingProduct />} />
+            <Route path="creatingproduct" element={<ProductDetail />} />
+            <Route path="editingproduct" element={<ProductDetail />} />
           </Routes>
         </Box>
       </Box>
