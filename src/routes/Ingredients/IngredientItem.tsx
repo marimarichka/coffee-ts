@@ -55,7 +55,7 @@ const IngredientItem: FC<IOneIngredient> = ({ ingredient }) => {
           <TextField
             autoFocus
             variant="outlined"
-            label="Name"
+            label="Name" 
             value={values.name}
             onChange={({ target: { value } }) => setValues({ ...values, name: value })}
             sx={{ marginBottom: "15px" }}

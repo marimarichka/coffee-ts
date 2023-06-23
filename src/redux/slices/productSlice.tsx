@@ -1,8 +1,17 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface IProductState {
+  _id?: string;
+  name: string;
+  inventory: { _id: string; name: string; optional: boolean; value: string }[];
+  ingredient: { _id: string; name: string; optional: boolean; value: string }[];
+}
+
+const initialState: IProductState = {
+  _id: undefined,
   name: "",
-  inventory: [] as { _id: string; name: string; optional: boolean; value: string  }[],
+  inventory: [],
+  ingredient: [],
 };
 
 export const productSlice = createSlice({
@@ -12,13 +21,16 @@ export const productSlice = createSlice({
     setName: (state, action) => {
       state.name = action.payload;
     },
-    addInventory: (state, action: PayloadAction<{ _id: string; name: string; optional: boolean; value: string }>) => {
+    addInventory: (state, action: PayloadAction<IProductState["inventory"][number]>) => {
       state.inventory.push(action.payload);
     },
     deleteInventory: (state, action: PayloadAction<string>) => {
       state.inventory = state.inventory.filter((inventory) => action.payload !== inventory._id);
     },
-    updateInventory: (state, action: PayloadAction<{ _id: string; newValues: { optional?: boolean; value?: string } }>) => {
+    updateInventory: (
+      state,
+      action: PayloadAction<{ _id: string; newValues: { optional?: boolean; value?: string } }>
+    ) => {
       state.inventory = state.inventory.map((item) => {
         if (action.payload._id === item._id) {
           return {
@@ -30,12 +42,22 @@ export const productSlice = createSlice({
       });
     },
     resetProduct: (state) => {
-      state.name = initialState.name,
-      state.inventory = initialState.inventory
-    }
+      state._id = initialState._id;
+      state.name = initialState.name;
+      state.inventory = initialState.inventory;
+      state.ingredient = initialState.ingredient;
+    },
+    setProduct: (state, action: PayloadAction<IProductState>) => {
+      const { _id, name, inventory, ingredient } = action.payload;
+      state._id = _id;
+      state.name = name;
+      state.inventory = inventory;
+      state.ingredient = ingredient;
+    },
   },
 });
 
-export const { setName, addInventory, updateInventory, deleteInventory, resetProduct } = productSlice.actions;
+export const { setName, addInventory, updateInventory, deleteInventory, resetProduct, setProduct } =
+  productSlice.actions;
 
 export default productSlice.reducer;

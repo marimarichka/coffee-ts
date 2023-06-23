@@ -3,18 +3,39 @@ import React, { FC } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IProduct } from "../../types";
-import { useDeleteProductMutation } from "../../redux/API/API";
+import { useDeleteProductMutation, useGetInventoryQuery } from "../../redux/API/API";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setProduct } from "../../redux/slices/productSlice";
 
 interface IOneProduct {
   product: IProduct;
 }
 
 const ProductItem: FC<IOneProduct> = ({ product }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [deleteProductMutation] = useDeleteProductMutation();
+  const { data: inventory } = useGetInventoryQuery();
 
   const handleRemove = (event: React.MouseEvent) => {
     event.stopPropagation();
     deleteProductMutation(product);
+  };
+
+  const onEditButtonClick = () => {
+    const newProduct = {
+      _id: product._id,
+      name: product.name,
+      ingredient: product.ingredient.map((i) => ({ ...i, value: `${i.value}`, name: "name" })),
+      inventory: product.inventory.map((i) => ({
+        ...i,
+        value: `${i.value}`,
+        name: inventory?.find((inv) => inv._id === i._id)?.name || "",
+      })),
+    };
+    dispatch(setProduct(newProduct));
+    navigate("/editingproduct");
   };
 
   return (
@@ -33,7 +54,7 @@ const ProductItem: FC<IOneProduct> = ({ product }) => {
     >
       <Box sx={{ flex: 1 }}>{product.name}</Box>
       <Box sx={{ width: "50px" }}>
-        <IconButton>
+        <IconButton onClick={onEditButtonClick}>
           <EditIcon sx={{ fontSize: "18px" }} />
         </IconButton>
       </Box>
