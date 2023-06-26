@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Box, Button, Paper} from "@mui/material";
+import React, { useMemo, useState } from "react";
+import { Box, Button, Paper, TextField } from "@mui/material";
 import { useGetInventoryQuery } from "../../redux/API/API";
 import { useDispatch } from "react-redux";
 import { addInventory } from "../../redux/slices/productSlice";
@@ -7,6 +7,7 @@ import { useAppSelector } from "../../redux/store";
 import LoadingWrapper from "../../shared/LoadingWrapper";
 
 const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+  const [value, setValue] = useState("");
   const { data: inventory, isLoading } = useGetInventoryQuery();
   const dispatch = useDispatch();
   const selectedInventory = useAppSelector((state) => state.product.inventory);
@@ -15,9 +16,10 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
     () =>
       inventory?.filter((inventoryItem) => {
         const item = selectedInventory.find(({ _id }) => _id === inventoryItem._id);
-        return !item;
+
+        return item ? false : inventoryItem.name.toLowerCase().includes(value.toLowerCase());
       }),
-    [inventory, selectedInventory]
+    [inventory, selectedInventory, value]
   );
 
   const onDialogOpen = (_id: string, name: string, optional: boolean, value: string) => {
@@ -42,9 +44,16 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
           Create new
         </Button>
       </Box>
-      <Box>Filter</Box>
+      <TextField
+        variant="outlined"
+        label="Filter"
+        size="small"
+        onChange={(e) => setValue(e.target.value)}
+        value={value}
+        sx={{ width: "250px" }}
+      />
       <LoadingWrapper loading={isLoading} noData={!inventory?.length}>
-      <Box sx={{ backgroundColor: "#F8F8F8", flexGrow: 1, overflow: "auto", maxHeight: "280px" }}>
+        <Box sx={{ backgroundColor: "#F8F8F8", flexGrow: 1, overflow: "auto", maxHeight: "280px" }}>
           {renderInventory?.map((inventoryItem) => (
             <Paper
               onClick={() => onDialogOpen(inventoryItem._id, inventoryItem.name, false, "0")}
