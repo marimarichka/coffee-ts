@@ -44,7 +44,7 @@ const Ingredients = () => {
           ADD INGREDIENT
         </Button>
       </Box>
-      <LoadingWrapper loading={isLoading} noData={!ingredients?.length}>
+      <LoadingWrapper loading={isLoading} noData={renderNewIngredient ? false : !ingredients?.length}>
         <Box
           sx={{
             display: "flex",

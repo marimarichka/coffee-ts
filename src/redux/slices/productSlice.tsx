@@ -41,6 +41,26 @@ export const productSlice = createSlice({
         return item;
       });
     },
+    addIngredient: (state, action: PayloadAction<IProductState["ingredient"][number]>) => {
+      state.ingredient.push(action.payload);
+    },
+    deleteIngredient: (state, action: PayloadAction<string>) => {
+      state.ingredient = state.ingredient.filter((ingredient) => action.payload !== ingredient._id);
+    },
+    updateIngredient: (
+      state,
+      action: PayloadAction<{ _id: string; newValues: { optional?: boolean; value?: string } }>
+    ) => {
+      state.ingredient = state.ingredient.map((item) => {
+        if (action.payload._id === item._id) {
+          return {
+            ...item,
+            ...action.payload.newValues,
+          };
+        }
+        return item;
+      });
+    },
     resetProduct: (state) => {
       state._id = initialState._id;
       state.name = initialState.name;
@@ -57,7 +77,16 @@ export const productSlice = createSlice({
   },
 });
 
-export const { setName, addInventory, updateInventory, deleteInventory, resetProduct, setProduct } =
-  productSlice.actions;
+export const {
+  setName,
+  addInventory,
+  updateInventory,
+  deleteInventory,
+  addIngredient,
+  deleteIngredient,
+  updateIngredient,
+  resetProduct,
+  setProduct,
+} = productSlice.actions;
 
 export default productSlice.reducer;
