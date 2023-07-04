@@ -17,7 +17,7 @@ const SelectedInventory = () => {
     dispatch(updateInventory({ _id, newValues: { optional } }));
   };
 
-  const onCountChange = (_id: string, value: string) => {
+  const onValueChange = (_id: string, value: string) => {
     dispatch(updateInventory({ _id, newValues: { value } }));
   };
 
@@ -60,7 +60,7 @@ const SelectedInventory = () => {
               variant="outlined"
               size="small"
               value={inventoryItem.value}
-              onChange={(e) => onCountChange(inventoryItem._id, e.target.value)}
+              onChange={(e) => onValueChange(inventoryItem._id, e.target.value)}
             ></TextField>
             <FormControlLabel
               control={

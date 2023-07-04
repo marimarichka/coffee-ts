@@ -1,29 +1,29 @@
 import React, { useMemo, useState } from "react";
 import { Box, Button, Paper, TextField } from "@mui/material";
-import { useGetInventoryQuery } from "../../redux/API/API";
-import { useDispatch } from "react-redux";
-import { addInventory } from "../../redux/slices/productSlice";
-import { useAppSelector } from "../../redux/store";
+import { useGetIngredientsQuery } from "../../redux/API/API";
 import LoadingWrapper from "../../shared/LoadingWrapper";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/store";
+import { addIngredient } from "../../redux/slices/productSlice";
 
-const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const IngredientsDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const [value, setValue] = useState("");
-  const { data: inventory, isLoading } = useGetInventoryQuery();
+  const { data: ingredients, isLoading } = useGetIngredientsQuery();
   const dispatch = useDispatch();
-  const selectedInventory = useAppSelector((state) => state.product.inventory);
+  const selectedIngredient = useAppSelector((state) => state.product.ingredient);
 
-  const renderInventory = useMemo(
+  const renderIngredient = useMemo(
     () =>
-      inventory?.filter((inventoryItem) => {
-        const item = selectedInventory.find(({ _id }) => _id === inventoryItem._id);
+      ingredients?.filter((ingredientItem) => {
+        const item = selectedIngredient.find(({ _id }) => _id === ingredientItem._id);
 
-        return item ? false : inventoryItem.name.toLowerCase().includes(value.toLowerCase());
+        return item ? false : ingredientItem.name.toLowerCase().includes(value.toLowerCase());
       }),
-    [inventory, selectedInventory, value]
+    [ingredients, selectedIngredient, value]
   );
 
-  const onInventoryClick = (_id: string, name: string) => {
-    dispatch(addInventory({ _id, name, optional: false, value: "0" }));
+  const onIngredientClick = (_id: string, name: string) => {
+    dispatch(addIngredient({ _id, name, optional: false, value: "0" }));
     setOpen(false);
   };
 
@@ -39,7 +39,7 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Box sx={{ fontSize: "20px", fontWeight: "700" }}>Inventory</Box>
+        <Box sx={{ fontSize: "20px", fontWeight: "700" }}>Ingredients</Box>
         <Button variant="contained" color="primary">
           Create new
         </Button>
@@ -48,17 +48,17 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
         variant="outlined"
         label="Filter"
         size="small"
+        fullWidth
         onChange={(e) => setValue(e.target.value)}
         value={value}
-        fullWidth
       />
-      <LoadingWrapper loading={isLoading} noData={!inventory?.length}>
+      <LoadingWrapper loading={isLoading} noData={!ingredients?.length}>
         <Box sx={{ backgroundColor: "#F8F8F8", flexGrow: 1, overflow: "auto", maxHeight: "280px" }}>
-          {renderInventory?.map((inventoryItem) => (
+          {renderIngredient?.map((ingredient) => (
             <Paper
-              onClick={() => onInventoryClick(inventoryItem._id, inventoryItem.name)}
-              key={inventoryItem._id}
+              key={ingredient._id}
               elevation={1}
+              onClick={() => onIngredientClick(ingredient._id, ingredient.name)}
               sx={{
                 backgroundColor: "#FFFFFF",
                 height: "35px",
@@ -69,7 +69,7 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
                 cursor: "pointer",
               }}
             >
-              {inventoryItem.name}
+              {ingredient.name}
             </Paper>
           ))}
         </Box>
@@ -86,4 +86,4 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
   );
 };
 
-export default InventoryDialog;
+export default IngredientsDialog;

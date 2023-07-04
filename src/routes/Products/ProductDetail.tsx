@@ -6,6 +6,7 @@ import { resetProduct, setName } from "../../redux/slices/productSlice";
 import SelectedInventory from "./SelectedInventory";
 import { useAddProductMutation, useEditProductMutation } from "../../redux/API/API";
 import { useNavigate } from "react-router-dom";
+import SelectedIngredients from "./SelectedIngredients/SelectedIngredients";
 
 const ProductDetail = () => {
   const [addProductMutation, { isLoading: isAddProductLoading }] = useAddProductMutation();
@@ -26,7 +27,7 @@ const ProductDetail = () => {
     const newProduct = {
       name: product.name,
       inventory: product.inventory.map((i) => ({ ...i, value: parseInt(i.value) })),
-      ingredient: [],
+      ingredient: product.ingredient.map((i) => ({...i, value: parseInt(i.value)})),
     };
     await addProductMutation(newProduct);
     navigate("/products");
@@ -84,6 +85,7 @@ const ProductDetail = () => {
       </Box>
       <TextField variant="outlined" label="Name" onChange={onNameChange} value={product.name} sx={{ width: "250px" }} />
       <SelectedInventory />
+      <SelectedIngredients />
     </Box>
   );
 };
