@@ -22,8 +22,8 @@ const IngredientsDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetState
     [ingredients, selectedIngredient, value]
   );
 
-  const onDialogOpen = (_id: string, name: string, optional: boolean, value: string) => {
-    dispatch(addIngredient({ _id, name, optional, value }));
+  const onIngredientClick = (_id: string, name: string) => {
+    dispatch(addIngredient({ _id, name, optional: false, value: "0" }));
     setOpen(false);
   };
 
@@ -58,7 +58,7 @@ const IngredientsDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetState
             <Paper
               key={ingredient._id}
               elevation={1}
-              onClick={() => onDialogOpen(ingredient._id, ingredient.name, false, "0")}
+              onClick={() => onIngredientClick(ingredient._id, ingredient.name)}
               sx={{
                 backgroundColor: "#FFFFFF",
                 height: "35px",

@@ -8,7 +8,6 @@ export type IIngredient = {
   _id: string;
   name: string;
   unit: UnitType;
-  __v: string;
 };
 
 export type IIngredientInput = {

@@ -22,8 +22,8 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
     [inventory, selectedInventory, value]
   );
 
-  const onDialogOpen = (_id: string, name: string, optional: boolean, value: string) => {
-    dispatch(addInventory({ _id, name, optional, value }));
+  const onInventoryClick = (_id: string, name: string) => {
+    dispatch(addInventory({ _id, name, optional: false, value: "0" }));
     setOpen(false);
   };
 
@@ -56,7 +56,7 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
         <Box sx={{ backgroundColor: "#F8F8F8", flexGrow: 1, overflow: "auto", maxHeight: "280px" }}>
           {renderInventory?.map((inventoryItem) => (
             <Paper
-              onClick={() => onDialogOpen(inventoryItem._id, inventoryItem.name, false, "0")}
+              onClick={() => onInventoryClick(inventoryItem._id, inventoryItem.name)}
               key={inventoryItem._id}
               elevation={1}
               sx={{
