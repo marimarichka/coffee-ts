@@ -30,3 +30,14 @@ export type IProduct = {
   ingredient: { _id: string; value: number; optional: boolean }[];
   inventory: { _id: string; value: number; optional: boolean }[];
 };
+
+export type IChangeItemError = {
+  message: string;
+  errorKey: ErrorKeysEnum;
+  dependentProducts: IProduct[]
+}
+
+export enum ErrorKeysEnum {
+  IngredientIsUsedInProduct = "INGREDIENT_IS_USED_IN_PRODUCT",
+  InventoryIsUsedInProduct = "INVENTORY_IS_USED_IN_PRODUCT"
+}

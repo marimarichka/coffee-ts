@@ -1,25 +1,57 @@
-import { Box, Button, IconButton, TextField } from "@mui/material";
-import React, { FC, useState } from "react";
+import { Alert, Box, Button, IconButton, Snackbar, TextField } from "@mui/material";
+import React, { FC, useEffect, useState } from "react";
 import { useDeleteInventoryMutation, useEditInventoryMutation } from "../../redux/API/API";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { IInventory } from "../../types";
+import { ErrorKeysEnum, IChangeItemError, IInventory } from "../../types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import { SerializedError } from "@reduxjs/toolkit";
 
 interface IOneInventory {
   inventory: IInventory;
 }
 
+const normalizedError = (error?: FetchBaseQueryError | SerializedError): IChangeItemError | undefined => {
+  if (error && "data" in error && error.data && typeof error.data === "object" && "errorKey" in error.data) {
+    const { errorKey } = error.data as IChangeItemError;
+    if (errorKey === ErrorKeysEnum.InventoryIsUsedInProduct) {
+      return error.data as IChangeItemError;
+    }
+  }
+};
+
 const InventoryItem: FC<IOneInventory> = ({ inventory }) => {
   const [editing, setEditing] = useState(false);
-  const [deleteInventory, { isLoading: isDeleteInventoryLoading }] = useDeleteInventoryMutation();
-  const [editInventory, { isLoading: isEditInventoryLoading }] = useEditInventoryMutation();
+  const [alertText, setAlertText] = useState<string | undefined>();
+  const [deleteInventory, { isLoading: isDeleteLoading, error: deleteError, reset: deleteReset }] =
+    useDeleteInventoryMutation();
+  const [editInventory, { isLoading: isEditLoading, error: editError, reset: editReset }] = useEditInventoryMutation();
   const [values, setValues] = useState({
     name: inventory?.name,
   });
 
-  const handleRemove = (event: React.MouseEvent) => {
+  const deleteErrorData = normalizedError(deleteError);
+  const editErrorData = normalizedError(editError);
+
+  useEffect(() => {
+    if (deleteErrorData)
+      setAlertText(
+        `You can't delete ${
+          inventory.name
+        } cause it is used in 1 or a few products: ${deleteErrorData?.dependentProducts.map((p) => p.name).join(", ")}`
+      );
+    if (editErrorData)
+      setAlertText(
+        `You can't edit ${inventory.name} cause it is used in 1 or a few products: ${editErrorData?.dependentProducts
+          .map((p) => p.name)
+          .join(", ")}`
+      );
+  }, [deleteErrorData, editErrorData]);
+
+  const handleRemove = async (event: React.MouseEvent) => {
     event.stopPropagation();
-    deleteInventory(inventory);
+    await deleteInventory(inventory);
+    deleteReset();
   };
 
   const onCancel = () => {
@@ -30,6 +62,7 @@ const InventoryItem: FC<IOneInventory> = ({ inventory }) => {
   const onEdit = async () => {
     await editInventory({ ...inventory, ...values });
     setEditing(false);
+    editReset();
   };
 
   return (
@@ -60,13 +93,13 @@ const InventoryItem: FC<IOneInventory> = ({ inventory }) => {
             sx={{ marginBottom: "15px" }}
           />
           <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
-            <Button variant="contained" color="primary" disabled={isEditInventoryLoading} onClick={onCancel}>
+            <Button variant="contained" color="primary" disabled={isEditLoading} onClick={onCancel}>
               Cancel
             </Button>
             <Button
               variant="contained"
               color="primary"
-              disabled={isEditInventoryLoading}
+              disabled={isEditLoading}
               sx={{ marginLeft: "30px" }}
               onClick={onEdit}
             >
@@ -80,15 +113,23 @@ const InventoryItem: FC<IOneInventory> = ({ inventory }) => {
           <Box
             sx={{ display: "flex", flexDirection: "row", alignSelf: "flex-end", position: "absolute", bottom: "20px" }}
           >
-            <IconButton disabled={isDeleteInventoryLoading} onClick={() => setEditing(true)}>
+            <IconButton disabled={isDeleteLoading} onClick={() => {
+              setEditing(true)
+              setValues(inventory)
+              }}>
               <EditIcon sx={{ fontSize: "30px" }} />
             </IconButton>
-            <IconButton aria-label="delete" onClick={handleRemove} disabled={isDeleteInventoryLoading}>
+            <IconButton aria-label="delete" onClick={handleRemove} disabled={isDeleteLoading}>
               <DeleteIcon sx={{ fontSize: "30px" }} />
             </IconButton>
           </Box>
         </>
       )}
+      <Snackbar open={!!alertText} autoHideDuration={6000} onClose={() => setAlertText(undefined)}>
+        <Alert onClose={() => setAlertText(undefined)} severity="error" sx={{ width: "100%" }}>
+          {alertText}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
