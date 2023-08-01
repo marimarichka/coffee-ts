@@ -12,9 +12,9 @@ interface IOneInventory {
 }
 
 const normalizedError = (error?: FetchBaseQueryError | SerializedError): IChangeItemError | undefined => {
-  if (error && "data" in error && error.data && typeof error.data === "object" && "errorKey" in error.data) {
-    const { errorKey } = error.data as IChangeItemError;
-    if (errorKey === ErrorKeysEnum.InventoryIsUsedInProduct) {
+  if (error && "data" in error && error.data && typeof error.data === "object" && "cause" in error.data) {
+    const { cause } = error.data as IChangeItemError;
+    if (cause === ErrorKeysEnum.InventoryIsUsedInProduct) {
       return error.data as IChangeItemError;
     }
   }

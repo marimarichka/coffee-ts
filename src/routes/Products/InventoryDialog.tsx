@@ -10,7 +10,7 @@ const InventoryDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
   const [value, setValue] = useState("");
   const { data: inventory, isLoading } = useGetInventoryQuery();
   const dispatch = useDispatch();
-  const selectedInventory = useAppSelector((state) => state.product.inventory);
+  const selectedInventory = useAppSelector((state) => state.product.inventories);
 
   const renderInventory = useMemo(
     () =>

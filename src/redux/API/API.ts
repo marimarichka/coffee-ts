@@ -11,12 +11,12 @@ export const api = createApi({
   tagTypes: [TAG_INGREDIENT, TAG_INVENTORY, TAG_PRODUCT],
   endpoints: (builder) => ({
     getIngredients: builder.query<IIngredient[], void>({
-      query: () => `/ingredient`,
+      query: () => `/ingredients`,
       providesTags: [TAG_INGREDIENT],
     }),
     addIngredient: builder.mutation<IIngredient, Partial<IIngredient>>({
       query: (body) => ({
-        url: `/ingredient`,
+        url: `/ingredients`,
         method: "POST",
         body,
       }),
@@ -24,7 +24,7 @@ export const api = createApi({
     }),
     editIngredient: builder.mutation<IIngredient, Partial<IIngredient>>({
       query: (body) => ({
-        url: `ingredient/${body._id}`,
+        url: `ingredients/${body._id}`,
         method: "PUT",
         body,
       }),
@@ -32,19 +32,19 @@ export const api = createApi({
     }),
     deleteIngredient: builder.mutation<IIngredient, Partial<IIngredient>>({
       query: (body) => ({
-        url: `/ingredient/${body._id}`,
+        url: `/ingredients/${body._id}`,
         method: "DELETE",
         body,
       }),
       invalidatesTags: [TAG_INGREDIENT],
     }),
     getInventory: builder.query<IInventory[], void>({
-      query: () => `/inventory`,
+      query: () => `/inventories`,
       providesTags: [TAG_INVENTORY],
     }),
     addInventory: builder.mutation<IInventory, Partial<IInventory>>({
       query: (body) => ({
-        url: `/inventory`,
+        url: `/inventories`,
         method: "POST",
         body,
       }),
@@ -52,7 +52,7 @@ export const api = createApi({
     }),
     editInventory: builder.mutation<IInventory, Partial<IInventory>>({
       query: (body) => ({
-        url: `inventory/${body._id}`,
+        url: `inventories/${body._id}`,
         method: "PUT",
         body,
       }),
@@ -60,19 +60,19 @@ export const api = createApi({
     }),
     deleteInventory: builder.mutation<IInventory, Partial<IInventory>>({
       query: (body) => ({
-        url: `/inventory/${body._id}`,
+        url: `/inventories/${body._id}`,
         method: "DELETE",
         body,
       }),
       invalidatesTags: [TAG_INVENTORY],
     }),
     getProducts: builder.query<IProduct[], void>({
-      query: () => `/product`,
+      query: () => `/products`,
       providesTags: [TAG_PRODUCT],
     }),
     addProduct: builder.mutation<IProduct, Partial<IProduct>>({
       query: (body) => ({
-        url: `/product`,
+        url: `/products`,
         method: "POST",
         body,
       }),
@@ -80,7 +80,7 @@ export const api = createApi({
     }),
     editProduct: builder.mutation<IProduct, Partial<IProduct>>({
       query: (body) => ({
-        url: `product/${body._id}`,
+        url: `products/${body._id}`,
         method: "PUT",
         body,
       }),
@@ -88,7 +88,7 @@ export const api = createApi({
     }),
     deleteProduct: builder.mutation<IProduct, Partial<IProduct>>({
       query: (body) => ({
-        url: `/product/${body._id}`,
+        url: `/products/${body._id}`,
         method: "DELETE",
         body,
       }),

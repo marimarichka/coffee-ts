@@ -27,13 +27,13 @@ export type IInventoryInput = {
 export type IProduct = {
   _id: string;
   name: string;
-  ingredient: { _id: string; value: number; optional: boolean }[];
-  inventory: { _id: string; value: number; optional: boolean }[];
+  ingredients: { _id: string; value: number; optional: boolean }[];
+  inventories: { _id: string; value: number; optional: boolean }[];
 };
 
 export type IChangeItemError = {
-  message: string;
-  errorKey: ErrorKeysEnum;
+  // message: string;
+  cause: ErrorKeysEnum;
   dependentProducts: IProduct[]
 }
 

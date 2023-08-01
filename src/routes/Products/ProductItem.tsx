@@ -28,12 +28,12 @@ const ProductItem: FC<IOneProduct> = ({ product }) => {
     const newProduct = {
       _id: product._id,
       name: product.name,
-      ingredient: product.ingredient.map((i) => ({
+      ingredients: product.ingredients.map((i) => ({
         ...i,
         value: `${i.value}`,
         name: ingredient?.find((ingr) => ingr._id === i._id)?.name || "",
       })),
-      inventory: product.inventory.map((i) => ({
+      inventories: product.inventories.map((i) => ({
         ...i,
         value: `${i.value}`,
         name: inventory?.find((inv) => inv._id === i._id)?.name || "",
