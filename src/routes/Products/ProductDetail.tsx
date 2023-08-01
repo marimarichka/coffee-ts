@@ -26,8 +26,8 @@ const ProductDetail = () => {
   const addProduct = async () => {
     const newProduct = {
       name: product.name,
-      inventory: product.inventory.map((i) => ({ ...i, value: parseInt(i.value) })),
-      ingredient: product.ingredient.map((i) => ({...i, value: parseInt(i.value)})),
+      inventories: product.inventories.map((i) => ({ ...i, value: parseInt(i.value) })),
+      ingredients: product.ingredients.map((i) => ({...i, value: parseInt(i.value)})),
     };
     await addProductMutation(newProduct);
     navigate("/products");
@@ -40,8 +40,8 @@ const ProductDetail = () => {
   const onEdit = async () => {
     await editProductMutation({
       ...product,
-      ingredient: product.ingredient.map((i) => ({ ...i, value: parseInt(i.value) })),
-      inventory: product.inventory.map((i) => ({ ...i, value: parseInt(i.value) })),
+      ingredients: product.ingredients.map((i) => ({ ...i, value: parseInt(i.value) })),
+      inventories: product.inventories.map((i) => ({ ...i, value: parseInt(i.value) })),
     });
     navigate("/products");
   };

@@ -9,7 +9,7 @@ import { useGetInventoryQuery } from "../../redux/API/API";
 
 const SelectedInventory = () => {
   const { data: inventory } = useGetInventoryQuery();
-  const selectedInventory = useAppSelector((state) => state.product.inventory);
+  const selectedInventory = useAppSelector((state) => state.product.inventories);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 

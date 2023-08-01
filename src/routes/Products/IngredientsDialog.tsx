@@ -10,7 +10,7 @@ const IngredientsDialog = ({ setOpen }: { setOpen: React.Dispatch<React.SetState
   const [value, setValue] = useState("");
   const { data: ingredients, isLoading } = useGetIngredientsQuery();
   const dispatch = useDispatch();
-  const selectedIngredient = useAppSelector((state) => state.product.ingredient);
+  const selectedIngredient = useAppSelector((state) => state.product.ingredients);
 
   const renderIngredient = useMemo(
     () =>

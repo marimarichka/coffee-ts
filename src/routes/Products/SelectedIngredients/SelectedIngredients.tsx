@@ -8,7 +8,7 @@ import { useGetIngredientsQuery } from "../../../redux/API/API";
 const SelectedIngredients = () => {
   const { data: ingredients } = useGetIngredientsQuery();
   const [open, setOpen] = useState(false);
-  const selectedIngredient = useAppSelector((state) => state.product.ingredient);
+  const selectedIngredient = useAppSelector((state) => state.product.ingredients);
 
   return (
     <Box
